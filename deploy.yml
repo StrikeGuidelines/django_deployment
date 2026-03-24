@@ -1,0 +1,37 @@
+name: Deploy idp
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntustrike1
+    env:
+      APP_NAME: ${{ vars.APP_NAME }}
+    steps:
+      - name: Pull codice
+        run: |
+          git config --global --add safe.directory /var/www/$APP_NAME
+          cd /var/www/$APP_NAME
+          git pull origin main
+
+      - name: Installa dipendenze
+        run: |
+          cd /var/www/$APP_NAME
+          ~/install.sh
+
+      - name: Migrazione database
+        run: |
+          cd /var/www/$APP_NAME
+          source .venv/bin/activate
+          python manage.py migrate --noinput
+
+      - name: Raccolta file statici
+        run: |
+          cd /var/www/$APP_NAME
+          source .venv/bin/activate
+          python manage.py collectstatic --noinput
+
+      - name: Riavvia servizio
+        run: sudo systemctl restart $APP_NAME
