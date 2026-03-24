@@ -1,38 +1,38 @@
 # Django Deployment
 
-GitHub Actions workflow per il deploy automatico di applicazioni Django su server self-hosted.
+GitHub Actions workflow for automatic deployment of Django applications on a self-hosted server.
 
-## Come funziona
+## How it works
 
-Il workflow si attiva ad ogni push sul branch `main` ed esegue i seguenti step sul runner `ubuntustrike1`:
+The workflow triggers on every push to the `main` branch and runs the following steps on the `ubuntustrike1` runner:
 
-1. **Pull codice** — aggiorna il repository in `/var/www/$APP_NAME`
-2. **Installa dipendenze** — esegue lo script `~/install.sh`
-3. **Migrazione database** — esegue `python manage.py migrate`
-4. **Raccolta file statici** — esegue `python manage.py collectstatic`
-5. **Riavvia servizio** — riavvia il servizio systemd dell'applicazione
+1. **Pull code** — updates the repository at `/var/www/$APP_NAME`
+2. **Install dependencies** — runs the `~/install.sh` script
+3. **Database migration** — runs `python manage.py migrate`
+4. **Collect static files** — runs `python manage.py collectstatic`
+5. **Restart service** — restarts the application's systemd service
 
-## Configurazione
+## Configuration
 
-### Variabili richieste
+### Required variables
 
-Impostare nel repository GitHub (Settings → Secrets and variables → Actions):
+Set in the GitHub repository (Settings → Secrets and variables → Actions):
 
-| Variabile | Descrizione |
-|-----------|-------------|
-| `APP_NAME` | Nome dell'applicazione (usato come nome directory e nome servizio systemd) |
+| Variable | Description |
+|----------|-------------|
+| `APP_NAME` | Application name (used as the directory name and systemd service name) |
 
-### Prerequisiti sul server
+### Server prerequisites
 
-- Runner GitHub Actions self-hosted registrato come `ubuntustrike1`
-- Applicazione Django presente in `/var/www/$APP_NAME`
-- Virtual environment Python in `/var/www/$APP_NAME/.venv`
-- Script di installazione dipendenze in `~/install.sh`
-- Servizio systemd configurato con il nome `$APP_NAME`
-- Permessi sudo per il runner per eseguire `systemctl restart`
+- GitHub Actions self-hosted runner registered as `ubuntustrike1`
+- Django application present at `/var/www/$APP_NAME`
+- Python virtual environment at `/var/www/$APP_NAME/.venv`
+- Dependency installation script at `~/install.sh`
+- systemd service configured with the name `$APP_NAME`
+- sudo permissions for the runner to execute `systemctl restart`
 
-## Utilizzo
+## Usage
 
-1. Aggiungere questo file come `.github/workflows/deploy.yml` nel repository dell'applicazione Django
-2. Configurare la variabile `APP_NAME`
-3. Ogni push su `main` avvierà il deploy automatico
+1. Add this file as `.github/workflows/deploy.yml` in the Django application repository
+2. Configure the `APP_NAME` variable
+3. Every push to `main` will trigger an automatic deploy
