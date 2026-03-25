@@ -4,7 +4,7 @@ GitHub Actions workflow for automatic deployment of Django applications on a sel
 
 ## How it works
 
-The workflow triggers on every push to the `main` branch and runs the following steps on the `ubuntustrike1` runner:
+The workflow triggers on every push of a tag matching `v*` (e.g. `v1.0.0`) and runs the following steps on the `ubuntustrike1` runner:
 
 1. **Pull code** — updates the repository at `/var/www/$APP_NAME`
 2. **Install dependencies** — runs the `~/install.sh` script
@@ -35,4 +35,8 @@ Set in the GitHub repository (Settings → Secrets and variables → Actions):
 
 1. Add this file as `.github/workflows/deploy.yml` in the Django application repository
 2. Configure the `APP_NAME` variable
-3. Every push to `main` will trigger an automatic deploy
+3. Push a tag matching `v*` to trigger an automatic deploy:
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```

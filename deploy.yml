@@ -2,7 +2,8 @@ name: Deploy idp
 
 on:
   push:
-    branches: [main]
+    tags:
+      - "v*"
 
 jobs:
   deploy:
