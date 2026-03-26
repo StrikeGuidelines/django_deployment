@@ -15,7 +15,8 @@ jobs:
         run: |
           git config --global --add safe.directory /var/www/$APP_NAME
           cd /var/www/$APP_NAME
-          git pull origin main
+          git fetch origin
+          git reset --hard origin/main
 
       - name: Installa dipendenze
         run: |
