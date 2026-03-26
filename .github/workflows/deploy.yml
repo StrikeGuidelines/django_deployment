@@ -7,21 +7,17 @@ on:
         description: "Self-hosted runner label"
         required: true
         type: string
-      app_name:
-        description: "Application name (directory and systemd service)"
-        required: true
-        type: string
 
 jobs:
   deploy:
     runs-on: ${{ inputs.runner }}
     env:
-      APP_NAME: ${{ inputs.app_name }}
+      APP_NAME: ${{ github.event.repository.name }}
     steps:
       - name: Debug inputs
         run: |
           echo "runner: ${{ inputs.runner }}"
-          echo "app_name: ${{ inputs.app_name }}"
+          echo "app_name: $APP_NAME"
 
       - name: Pull codice
         run: |
