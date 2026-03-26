@@ -18,6 +18,11 @@ jobs:
     env:
       APP_NAME: ${{ inputs.app_name }}
     steps:
+      - name: Debug inputs
+        run: |
+          echo "runner: ${{ inputs.runner }}"
+          echo "app_name: ${{ inputs.app_name }}"
+
       - name: Pull codice
         run: |
           cd /var/www/$APP_NAME
