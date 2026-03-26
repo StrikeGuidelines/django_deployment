@@ -19,6 +19,9 @@ jobs:
           echo "runner: ${{ inputs.runner }}"
           echo "app_name: $APP_NAME"
 
+      - name: Fix ownership
+        run: sudo /home/deploy/bin/fix-ownership-$APP_NAME
+
       - name: Pull codice
         run: |
           cd /var/www/$APP_NAME
