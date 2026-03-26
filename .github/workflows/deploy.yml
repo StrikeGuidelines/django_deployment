@@ -1,15 +1,22 @@
 name: Deploy idp
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_call:
+    inputs:
+      runner:
+        description: "Self-hosted runner label"
+        required: true
+        type: string
+      app_name:
+        description: "Application name (directory and systemd service)"
+        required: true
+        type: string
 
 jobs:
   deploy:
-    runs-on: ubuntustrike1
+    runs-on: ${{ inputs.runner }}
     env:
-      APP_NAME: ${{ vars.APP_NAME }}
+      APP_NAME: ${{ inputs.app_name }}
     steps:
       - name: Pull codice
         run: |
