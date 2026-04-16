@@ -1,0 +1,12 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  deploy:
+    uses: StrikeGuidelines/django_deployment/.github/workflows/deploy.yml@main
+    with:
+      runner: ubuntustrike1

@@ -19,31 +19,43 @@ jobs:
           echo "runner: ${{ inputs.runner }}"
           echo "app_name: $APP_NAME"
 
+      - name: Controlla esistenza cartella
+        run: |
+          if [ ! -d "/var/www/$APP_NAME" ]; then
+            echo "Cartella /var/www/$APP_NAME non trovata. Il progetto non è stato configurato sul server."
+            exit 1
+          fi
+
       - name: Fix ownership
         run: sudo /home/deploy/bin/fix-ownership-$APP_NAME
 
       - name: Pull codice
+
         run: |
           cd /var/www/$APP_NAME
           git fetch origin
           git reset --hard origin/main
 
       - name: Installa dipendenze
+
         run: |
           cd /var/www/$APP_NAME
           ~/install.sh
 
       - name: Migrazione database
+
         run: |
           cd /var/www/$APP_NAME
           source .venv/bin/activate
           python manage.py migrate --noinput
 
       - name: Raccolta file statici
+
         run: |
           cd /var/www/$APP_NAME
           source .venv/bin/activate
           python manage.py collectstatic --noinput
 
       - name: Riavvia servizio
+
         run: sudo systemctl restart $APP_NAME
